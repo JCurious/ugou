@@ -1,44 +1,144 @@
 <template>
-    <div>
-        <view>
-            <!-- 轮播图区域 -->
-            <swiper>
-                <block wx:for="{{detail.pics}}" wx:key="index">
-                    <swiper-item>
-                        <image src="{{item.pics_big_url}}" />
-                    </swiper-item>
-                </block>
-            </swiper>
-            <!-- 商品信息区域 -->
-            <view>
-              <view class="box1">
-                <view class="price">￥{{goodsInfo.goods_price}}</view>
-                <view class="goods_name">
-                  <view class="left"></view>
-                  <view class="right"></view>
+    <view>
+        <!-- 轮播图区域 -->
+        <swiper indicator-dots circular>
+            <block wx:for="{{detail.pics}}" wx:key="index">
+                <swiper-item>
+                    <image src="{{item.pics_big_url}}" />
+                </swiper-item>
+            </block>
+        </swiper>
+
+        <!-- 商品信息区域 -->
+        <view class="goods-info">
+            <view class="box1 split">
+                <view class="price">￥{{ detail.goods_price }}</view>
+                <view class="goods-name">
+                    <view class="left">{{ detail.goods_name }}</view>
+                    <view class="right">
+                        <van-icon name="star-o" />
+                        <view>收藏</view>
+                    </view>
                 </view>
-                <view class=""></view>
-              </view>
-
-
-              <view class="box2">
-                <view></view>
-                <view></view>
-              </view>
-              <view class="box3"></view>
+                <view class="express">快递：免运费</view>
+            </view>
+            <view class="box2 split">
+                <view>
+                    <text>促销</text>
+                    <text>每满100减1000</text>
+                </view>
+                <view>
+                    <text>已选</text>
+                    <text>灰色/XXL</text>
+                </view>
+            </view>
+            <view class="box3 split">
+                <view>
+                    <text>地址</text>
+                    <text>请选择收货地址</text>
+                </view>
+                <van-icon name="arrow" />
             </view>
         </view>
-    </div>
+        <!-- 商品详情区域 -->
+        <view>
+          <van-tabs>
+            <van-tab>
+              <view>
+
+              </view>
+            </van-tab>
+          </van-tabs>
+        </view>
+        
+    </view>
 </template>
 
 <script>
 import wepy from 'wepy';
 import mix from '@/mixins/goods_detail/goods_detail.js';
+
 export default class extends wepy.page {
     config = {};
+
     mixins = [mix];
 }
 </script>
-<style lang="less">
-</style>
 
+<style lang="less">
+swiper {
+    height: 750rpx;
+    image {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.goods-info {
+    .split {
+        border-bottom: 15rpx solid #efefef;
+    }
+
+    .box1 {
+        padding: 0 10rpx;
+
+        .price {
+            font-size: 40rpx;
+            color: red;
+            margin: 20px 0;
+        }
+
+        .goods-name {
+            display: flex;
+            justify-content: space-between;
+
+            .left {
+                font-size: 26rpx;
+            }
+
+            .right {
+                width: 200rpx;
+                text-align: center;
+                border-left: 1px solid #eee;
+
+                > view {
+                    font-size: 20rpx;
+                }
+            }
+        }
+
+        .express {
+            font-size: 26rpx;
+            color: #666;
+            font-weight: bold;
+            line-height: 80rpx;
+        }
+    }
+
+    .box2,
+    .box3 {
+        font-size: 24rpx;
+        margin: 0 10rpx;
+        view {
+            line-height: 80rpx;
+            text:nth-child(1) {
+                margin-right: 20rpx;
+            }
+
+            text:nth-child(2) {
+                color: #666;
+            }
+        }
+    }
+
+    .box3 {
+        display: flex;
+        justify-content: space-between;
+
+        .van-icon {
+            font-size: 30rpx;
+        }
+    }
+}
+
+</style>

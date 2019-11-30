@@ -58,11 +58,16 @@ export default class extends wepy.app {
             "van-card": "/vendor/vant/card/index"
         }
     };
-
+    //专门存储全局共享的数据
+    //只需要通过 this.$parent.globalData 就可以拿到这个全局共享数据对象
     globalData = {
-        userInfo: null
+        cart:[]   //全局的购物车列表
     };
-
+    //全局的方法
+    test(){
+        console.log('ok');
+        
+    }
     constructor() {
         super();
         this.use('requestfix');

@@ -1,0 +1,45 @@
+<template>
+    <div>
+        <view>
+            <!-- 商品列表区域 -->
+            <block wx:for="{{goodslist}}" wx:key="index">
+                <van-card
+                    num="{{item.goods_number}}"
+                    price="{{item.goods_price}}"
+                    title="{{item.goods_name}}"
+                    thumb="{{ item.goods_small_logo }}"
+                    @tap="goGoodsDetail({{item.goods_id}})"
+                />
+            </block>
+            <view class="underline" hidden="{{canLoad}}">~ 我是有底线的 ~</view>
+        </view>
+    </div>
+</template>
+
+<script>
+import wepy from 'wepy';
+import mix from '@/mixins/tabs/goods_list.js';
+export default class extends wepy.page {
+    //config 节点只能写在此页面内，不能抽离到 mixin中
+    config = {
+        navigationBarTitleText: '商品列表',
+        enablePullDownRefresh: true,
+        backgroundColor: '#ccc',
+        onReachBottomDistance: 333
+    };
+    mixins = [mix];
+}
+</script>
+<style lang="less">
+.van-card {
+    border-bottom: 1px solid #ccc;
+}
+
+.underline {
+    margin: 10rpx 0;
+    text-align: center;
+    font-size: 26rpx;
+    color: #ccc;
+}
+</style>
+

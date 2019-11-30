@@ -1,0 +1,105 @@
+<style lang="less">
+</style>
+
+<script>
+import wepy from 'wepy';
+import 'wepy-async-function';
+import './common.js';
+export default class extends wepy.app {
+    config = {
+        pages: [
+            'pages/tabs/home', //首页
+            'pages/tabs/cates', //分类
+            'pages/tabs/search', //搜索
+            'pages/tabs/cart', //购物车
+            'pages/tabs/my', //我的
+            'pages/goods_detail/main',
+            'pages/goods_list'
+        ],
+        window: {
+            backgroundTextStyle: 'light',
+            navigationBarBackgroundColor: '#d81e06',
+            navigationBarTitleText: '购物',
+            navigationBarTextStyle: 'white'
+        },
+
+        tabBar: {
+            selectedColor: '#d81e06',
+            list: [
+                { name: 'home', text: '首页' },
+                { name: 'cates', text: '分类' },
+                { name: 'search', text: '搜索' },
+                { name: 'cart', text: '购物车' },
+                { name: 'my', text: '我的' }
+            ].map(i => ({
+                pagePath: `pages/tabs/${i.name}`,
+                text: i.text,
+                iconPath: `/assets/icons/${i.name}.png`,
+                selectedIconPath: `/assets/icons/${i.name}-active.png`
+            }))
+        },
+        usingComponents: {
+            // 徽章。
+            'van-badge': './vendor/vant/badge/index',
+            'van-badge-group': './vendor/vant/badge-group/index',
+            // 布局。
+            'van-row': './vendor/vant/row/index',
+            'van-col': './vendor/vant/col/index',
+            // 搜索框。
+            'van-search': './vendor/vant/search/index',
+            // Cell 单元格。
+            'van-cell': './vendor/vant/cell/index',
+            'van-cell-group': './vendor/vant/cell-group/index',
+            // 图标
+            "van-icon": "./vendor/vant/icon/index",
+            // Tag 标签。
+            "van-tag": "/vendor/vant/tag/index",
+            // 商品卡片。
+            "van-card": "/vendor/vant/card/index"
+        }
+    };
+
+    globalData = {
+        userInfo: null
+    };
+
+    constructor() {
+        super();
+        this.use('requestfix');
+        this.use('promisify');
+
+        this.intercept('request', {
+            // 发出请求时的回调函数
+            config: p => {
+                // 对所有request请求中的OBJECT参数对象统一附加时间戳属性
+                wepy.showLoading({
+                    title: '加载中...'
+                });
+                // 必须返回OBJECT参数对象，否则无法发送请求到服务端
+                return p;
+            },
+
+            // 请求成功后的回调函数
+            success(p) {
+                // 可以在这里对收到的响应数据对象进行加工处理
+                console.log('request success: ', p);
+                // 必须返回响应数据对象，否则后续无法对响应数据进行处理
+                return p;
+            },
+
+            //请求失败后的回调函数
+            fail(p) {
+                console.log('request fail: ', p);
+                // 必须返回响应数据对象，否则后续无法对响应数据进行处理
+                return p;
+            },
+
+            // 请求完成时的回调函数(请求成功或失败都会被执行)
+            complete(p) {
+                wepy.hideLoading(); //关闭加载提示
+                console.log('request complete: ', p);
+            }
+        });
+    }
+}
+</script>
